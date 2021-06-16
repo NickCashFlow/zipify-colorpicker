@@ -11,13 +11,18 @@ Vue 2.0 Zipify Color Picker component
 $ npm install zipify-colorpicker
 ```
 
+### Yarn
+```bash
+$ yarn add zipify-colorpicker
+```
+
 ### CommonJS
 ```js
-var ZipifyColorpicker = require('zipify-colorpicker/src/ZipifyColorpicker.vue');
+const { ZipifyColorpicker } = require('zipify-colorpicker');
 
 new Vue({
   components: {
-    'ZipifyColorpicker': ZipifyColorpicker
+    ZipifyColorpicker
   }
 })
 ```
@@ -34,13 +39,13 @@ new Vue({
 ```
 
 ### Browser globals
-The `dist` folder contains `zipify-colorpicker.js` and `zipify-colorpicker.min.js` with all components exported in the <code>window.ZipifyColorpicker</code> object. These bundles are also available on NPM packages.
+The `dist` folder contains `zipify-colorpicker.js` and `zipify-colorpicker.min.js` with all components exported in the <code>window.ZipifyColorPicker</code> object. These bundles are also available on NPM/Yarn packages.
 
 ```html
 <script src="path/to/vue.js"></script>
-<script src="path/to/zipify-colorpiker.min.js"></script>
+<script src="path/to/zipify-colorpicker.min.js"></script>
 <script>
-  var ZipifyColorpicker = ZipifyColorpicker.ZipifyColorpicker
+  const { ZipifyColorPicker } = window.ZipifyColorPicker
 </script>
 ```
 
@@ -92,7 +97,7 @@ var color = 'hsva(39, 1, 0.5, 0.5)'; //hsva,  s, v and alpha - 0-1
 new Vue({
   el: '#app',
   components: {
-    ZipifyColorpicker,
+    ZipifyColorPicker,
   },
   data () {
     return {
@@ -105,21 +110,21 @@ new Vue({
 
 ```html
 <!-- suppose you have the data 'color' in your component -->
-<ZipifyColorpicker v-model="color" />
+<ZipifyColorPicker v-model="color" />
 ```
 
 OR
 
 ```html
-<ZipifyColorpicker :value="color" @input="updateValue" />
+<ZipifyColorPicker :color="color" @input="updateValue" />
 ```
 
 In some cases you can give the component a predefined set of colors with the property `presetColors` by simply passing it an array with the color values as strings in any css compatible format.
 
 ```html
-<ZipifyColorpicker
+<ZipifyColorPicker
   @input="updateValue"
-  :value="color"
+  :color="color"
   :preset-colors="[
     '#f00', '#00ff00', '#00ff0055', 'rgb(201, 76, 76)', 'rgba(0,0,255,1)', 'hsl(89, 43%, 51%)', 'hsla(89, 43%, 51%, 0.6)'
   ]"

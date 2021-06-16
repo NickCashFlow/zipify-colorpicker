@@ -1,16 +1,16 @@
 <template>
     <div role="application" aria-label="Zipify color picker" class="zpc">
         <div class="zpc-saturation-wrap">
-            <Saturation :value="color" @change="onSaturationChanged" />
+            <Saturation :value="colorModel" @change="onSaturationChanged" />
         </div>
 
         <div class="zpc-controls">
             <div class="zpc-sliders">
                 <div class="zpc-hue-wrap">
-                    <Hue v-model="color" @change="onHueChange" />
+                    <Hue v-model="colorModel" @change="onHueChange" />
                 </div>
                 <div class="zpc-alpha-wrap">
-                    <Alpha :color="color" :alpha-value="alphaValue" @change="changeAlpha" />
+                    <Alpha :color="colorModel" :alpha-value="alphaValue" @change="changeAlpha" />
                 </div>
             </div>
         </div>
@@ -23,19 +23,19 @@
                     <input
                         aria-labelledby="hex"
                         class="zpc-input__input"
-                        :value="color.hex"
+                        :value="colorModel.hex"
                         @change="onHexChanged"
                     >
                 </div>
             </div>
             <div class="zpc-field--single">
-                <EditableInput label="r" :value="color.r" :min="0" :max="255" @change="changeR" />
+                <EditableInput label="r" :value="colorModel.r" :min="0" :max="255" @change="changeR" />
             </div>
             <div class="zpc-field--single">
-                <EditableInput label="g" :value="color.g" :min="0" :max="255" @change="changeG" />
+                <EditableInput label="g" :value="colorModel.g" :min="0" :max="255" @change="changeG" />
             </div>
             <div class="zpc-field--single">
-                <EditableInput label="b" :value="color.b" :min="0" :max="255" @change="changeB" />
+                <EditableInput label="b" :value="colorModel.b" :min="0" :max="255" @change="changeB" />
             </div>
             <div class="zpc-field--single">
                 <EditableInput label="Alpha" :value="alphaValue" :min="0" :max="100" @change="changeAlpha" />
@@ -63,9 +63,13 @@ export default {
         Swatch
     },
 
+    model: {
+        prop: 'color'
+    },
+
     props: {
-        value: {
-            type: Object,
+        color: {
+            type: String,
             required: true
         },
 
@@ -87,23 +91,23 @@ export default {
     },
 
     data: () => ({
-        color: {},
+        colorModel: {},
         oldValue: ''
     }),
 
     computed: {
         alphaValue () {
-            return Math.round(this.color.alpha * 100);
+            return Math.round(this.colorModel.alpha * 100);
         }
     },
 
     watch: {
-        value: {
+        color: {
             immediate: true,
 
             handler (value) {
                 if (value !== this.oldValue) {
-                    this.color = this.parseColor(value);
+                    this.colorModel = this.parseColor(value);
                     this.emitEvent();
                 }
             }
@@ -120,44 +124,44 @@ export default {
         },
 
         handlePreset (color) {
-            this.color = this.parseColor(color);
+            this.colorModel = this.parseColor(color);
             this.emitEvent();
         },
 
         onSaturationChanged (components) {
-            this.color.updateHsv(components);
+            this.colorModel.updateHsv(components);
             this.emitEvent();
         },
 
         onHexChanged(event) {
             const hex = event.target.value;
 
-            this.color = this.parseColor(hex);
+            this.colorModel = this.parseColor(hex);
             this.emitEvent();
         },
 
         onHueChange(hue) {
-            this.color.updateHsv({ h: hue });
+            this.colorModel.updateHsv({ h: hue });
             this.emitEvent();
         },
 
         changeR(r) {
-            this.color.updateRgb({ r });
+            this.colorModel.updateRgb({ r });
             this.emitEvent();
         },
 
         changeG(g) {
-            this.color.updateRgb({ g });
+            this.colorModel.updateRgb({ g });
             this.emitEvent();
         },
 
         changeB(b) {
-            this.color.updateRgb({ b });
+            this.colorModel.updateRgb({ b });
             this.emitEvent();
         },
 
         emitEvent () {
-            const colorString = this.color.alpha === 1 ? this.color.toHexString() : this.color.toRgbaString();
+            const colorString = this.colorModel.alpha === 1 ? this.colorModel.toHexString() : this.colorModel.toRgbaString();
 
             this.oldValue = colorString;
 
@@ -165,7 +169,7 @@ export default {
         },
 
         changeAlpha (alpha) {
-            this.color.setAlpha(alpha / 100);
+            this.colorModel.setAlpha(alpha / 100);
             this.emitEvent();
         }
     }
