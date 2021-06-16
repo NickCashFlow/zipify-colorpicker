@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["ZipifyColorpicker"] = factory();
+		exports["ZipifyColorPicker"] = factory();
 	else
-		root["ZipifyColorpicker"] = factory();
+		root["ZipifyColorPicker"] = factory();
 })(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -612,9 +612,12 @@ var _default2 = {
     EditableInput: _common.EditableInput,
     Swatch: _common.Swatch
   },
+  model: {
+    prop: 'color'
+  },
   props: {
-    value: {
-      type: Object,
+    color: {
+      type: String,
       required: true
     },
     presetColors: {
@@ -635,21 +638,21 @@ var _default2 = {
   },
   data: function data() {
     return {
-      color: {},
+      colorModel: {},
       oldValue: ''
     };
   },
   computed: {
     alphaValue: function alphaValue() {
-      return Math.round(this.color.alpha * 100);
+      return Math.round(this.colorModel.alpha * 100);
     }
   },
   watch: {
-    value: {
+    color: {
       immediate: true,
       handler: function handler(value) {
         if (value !== this.oldValue) {
-          this.color = this.parseColor(value);
+          this.colorModel = this.parseColor(value);
           this.emitEvent();
         }
       }
@@ -663,49 +666,49 @@ var _default2 = {
       return _models.ColorModel.create(color);
     },
     handlePreset: function handlePreset(color) {
-      this.color = this.parseColor(color);
+      this.colorModel = this.parseColor(color);
       this.emitEvent();
     },
     onSaturationChanged: function onSaturationChanged(components) {
-      this.color.updateHsv(components);
+      this.colorModel.updateHsv(components);
       this.emitEvent();
     },
     onHexChanged: function onHexChanged(event) {
       var hex = event.target.value;
-      this.color = this.parseColor(hex);
+      this.colorModel = this.parseColor(hex);
       this.emitEvent();
     },
     onHueChange: function onHueChange(hue) {
-      this.color.updateHsv({
+      this.colorModel.updateHsv({
         h: hue
       });
       this.emitEvent();
     },
     changeR: function changeR(r) {
-      this.color.updateRgb({
+      this.colorModel.updateRgb({
         r: r
       });
       this.emitEvent();
     },
     changeG: function changeG(g) {
-      this.color.updateRgb({
+      this.colorModel.updateRgb({
         g: g
       });
       this.emitEvent();
     },
     changeB: function changeB(b) {
-      this.color.updateRgb({
+      this.colorModel.updateRgb({
         b: b
       });
       this.emitEvent();
     },
     emitEvent: function emitEvent() {
-      var colorString = this.color.alpha === 1 ? this.color.toHexString() : this.color.toRgbaString();
+      var colorString = this.colorModel.alpha === 1 ? this.colorModel.toHexString() : this.colorModel.toRgbaString();
       this.oldValue = colorString;
       this.$emit('input', colorString);
     },
     changeAlpha: function changeAlpha(alpha) {
-      this.color.setAlpha(alpha / 100);
+      this.colorModel.setAlpha(alpha / 100);
       this.emitEvent();
     }
   }
@@ -3141,7 +3144,7 @@ var render = function() {
         { staticClass: "zpc-saturation-wrap" },
         [
           _c("Saturation", {
-            attrs: { value: _vm.color },
+            attrs: { value: _vm.colorModel },
             on: { change: _vm.onSaturationChanged }
           })
         ],
@@ -3157,11 +3160,11 @@ var render = function() {
               _c("Hue", {
                 on: { change: _vm.onHueChange },
                 model: {
-                  value: _vm.color,
+                  value: _vm.colorModel,
                   callback: function($$v) {
-                    _vm.color = $$v
+                    _vm.colorModel = $$v
                   },
-                  expression: "color"
+                  expression: "colorModel"
                 }
               })
             ],
@@ -3173,7 +3176,7 @@ var render = function() {
             { staticClass: "zpc-alpha-wrap" },
             [
               _c("Alpha", {
-                attrs: { color: _vm.color, "alpha-value": _vm.alphaValue },
+                attrs: { color: _vm.colorModel, "alpha-value": _vm.alphaValue },
                 on: { change: _vm.changeAlpha }
               })
             ],
@@ -3193,7 +3196,7 @@ var render = function() {
                 _c("input", {
                   staticClass: "zpc-input__input",
                   attrs: { "aria-labelledby": "hex" },
-                  domProps: { value: _vm.color.hex },
+                  domProps: { value: _vm.colorModel.hex },
                   on: { change: _vm.onHexChanged }
                 })
               ])
@@ -3204,7 +3207,12 @@ var render = function() {
               { staticClass: "zpc-field--single" },
               [
                 _c("EditableInput", {
-                  attrs: { label: "r", value: _vm.color.r, min: 0, max: 255 },
+                  attrs: {
+                    label: "r",
+                    value: _vm.colorModel.r,
+                    min: 0,
+                    max: 255
+                  },
                   on: { change: _vm.changeR }
                 })
               ],
@@ -3216,7 +3224,12 @@ var render = function() {
               { staticClass: "zpc-field--single" },
               [
                 _c("EditableInput", {
-                  attrs: { label: "g", value: _vm.color.g, min: 0, max: 255 },
+                  attrs: {
+                    label: "g",
+                    value: _vm.colorModel.g,
+                    min: 0,
+                    max: 255
+                  },
                   on: { change: _vm.changeG }
                 })
               ],
@@ -3228,7 +3241,12 @@ var render = function() {
               { staticClass: "zpc-field--single" },
               [
                 _c("EditableInput", {
-                  attrs: { label: "b", value: _vm.color.b, min: 0, max: 255 },
+                  attrs: {
+                    label: "b",
+                    value: _vm.colorModel.b,
+                    min: 0,
+                    max: 255
+                  },
                   on: { change: _vm.changeB }
                 })
               ],
