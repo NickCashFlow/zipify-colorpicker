@@ -43,7 +43,7 @@
         </div>
 
         <div class="zpc-presets" role="group" aria-label="A color preset, pick one to set as current color" v-if="presetColors.length">
-            <Swatch v-for="color in presetColors" :key="color" :color="color" @selected="handlePreset" class="zpc-presets-color" />
+            <Swatch v-for="color in presetColors" :key="generateKeyForSwatch(color)" :color="color" @selected="handlePreset" class="zpc-presets-color" />
         </div>
     </div>
 </template>
@@ -51,6 +51,7 @@
 <script>
 import { Alpha, EditableInput, Swatch, Saturation, Hue } from './common/';
 import { ColorModel } from '../models';
+import { uniquIDs } from '../helpers';
 
 export default {
     name: 'ZipifyColorPicker',
@@ -115,6 +116,7 @@ export default {
     },
 
     created() {
+        this.colorPickerId = `zpc-${uniquIDs()}`;
         this.emitEvent();
     },
 
@@ -171,6 +173,10 @@ export default {
         changeAlpha (alpha) {
             this.colorModel.setAlpha(alpha / 100);
             this.emitEvent();
+        },
+
+        generateKeyForSwatch(color) {
+            return `${this.colorPickerId}-${color}`;
         }
     }
 };
@@ -211,30 +217,6 @@ export default {
   position: relative;
   height: 8px;
   margin-top: 12px;
-}
-
-.zpc-color-wrap {
-  width: 24px;
-  height: 24px;
-  position: relative;
-  margin-top: 4px;
-  margin-left: 4px;
-  border-radius: 3px;
-}
-
-.vc-sketch-active-color {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 2px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15), inset 0 0 4px rgba(0, 0, 0, .25);
-  z-index: 2;
-}
-
-.zpc-color-wrap .zpc-checkerboard {
-  background-size: auto;
 }
 
 .zpc-field {
@@ -288,18 +270,11 @@ export default {
   cursor: pointer;
   width: 24px;
   height: 24px;
-  border: 00;
+  border: 0;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
 }
 
 .zpc-presets-color:focus, .zpc-presets-color:focus-within {
   outline: 1px solid #ce9a0f;
-}
-.zpc-presets-color .zpc-checkerboard {
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
-}
-
-.vc-sketch__disable-alpha .zpc-color-wrap {
-  height: 10px;
 }
 </style>
