@@ -1,6 +1,6 @@
 {
   "name": "zipify-colorpicker",
-  "version": "1.0.4",
+  "version": "1.0.12",
   "description": "Vue 2.0 Zipify Color Picker component",
   "keywords": [
     "colorpicker",
@@ -12,7 +12,8 @@
     "dev": "node build/dev-server.js",
     "gh": "npm run example && node build/deploy",
     "lint": "eslint --ext .js,.vue src",
-    "release": "npm run lint && webpack --progress --hide-modules --config  ./build/webpack.release.js && webpack --progress --hide-modules --config  ./build/webpack.release.min.js"
+    "release": "npm run lint && npm run release:build",
+    "release:build": "webpack --progress --hide-modules --config  ./build/webpack.release.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,11 @@
       "name": "Dmitry Kit",
       "email": "v3il@ukr.net",
       "url": "https://github.com/v3il"
+    },
+    {
+      "name": "Taras Turchenko",
+      "email": "taras.turchenko@masterofcode.com",
+      "url": "https://lab.mocintra.com/taras.turchenko"
     }
   ],
   "devDependencies": {
@@ -71,5 +77,8 @@
     "webpack-hot-middleware": "^2.22.1",
     "webpack-merge": "^4.1.2"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@popperjs/core": "^2.9.2"
+  }
 }

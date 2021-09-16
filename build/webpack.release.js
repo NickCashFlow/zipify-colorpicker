@@ -1,11 +1,13 @@
-var path = require('path');
-var vueLoaderConfig = require('./vue-loader.conf');
+const { optimize: { UglifyJsPlugin, OccurrenceOrderPlugin } } = require('webpack');
+const merge = require('webpack-merge');
+const path = require('path');
+const vueLoaderConfig = require('./vue-loader.conf');
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir);
 }
 
-module.exports = {
+const commonConfig = {
     entry: {
         'zipify-colorpicker': './src/index.js'
     },
@@ -29,9 +31,23 @@ module.exports = {
             }
         ]
     },
-
     node: {
-    // prevent webpack from injecting an global polyfill that includes Function(return this) and eval(this)
         global: false
     }
 };
+
+module.exports = [
+    merge(commonConfig, {
+        output: { filename: './dist/[name].js' }
+    }),
+    merge(commonConfig, {
+        output: { filename: './dist/[name].min.js' },
+        plugins: [
+            new UglifyJsPlugin({
+                sourceMap: false,
+                compress: { warnings: false }
+            }),
+            new OccurrenceOrderPlugin()
+        ]
+    })
+];

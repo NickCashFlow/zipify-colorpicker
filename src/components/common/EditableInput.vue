@@ -6,6 +6,7 @@
             v-model="tempValue"
             class="zpc-input__input"
             @change="onChange"
+            @keydown.enter.prevent="onChange"
             @keydown.exact.up.prevent="incrementValue(step)"
             @keydown.exact.down.prevent="decrementValue(step)"
             @keydown.shift.up.prevent="incrementValue($options.SHIFT_STEP)"

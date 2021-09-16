@@ -1,10 +1,11 @@
 <template>
     <button
         :aria-label="ariaLabel"
-        :style="swatchStyle"
         @click="onSwatchClick"
         type="button"
-    />
+    >
+        <span class="zpc-presets-color-wrap-in" :style="swatchStyle" />
+    </button>
 </template>
 
 <script>
@@ -50,3 +51,13 @@ export default {
     }
 };
 </script>
+
+<style>
+.zpc-presets-color-wrap-in {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+}
+</style>

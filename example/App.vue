@@ -1,10 +1,10 @@
 <template>
     <div id="app">
         <div class="header-container">
-            <div class="header-bg" :style="{ backgroundColor: color }" />
+            <div class="header-bg" :style="bgc" />
             <div class="header">
                 <div class="intro-wrap">
-                    <div class="intro" :style="{ color: textColor }">
+                    <div class="intro" :style="textColor">
                         <h1>Zipify Colorpicker</h1>
                         <p role="presentation">
                             Vue 2.0 Zipify Color Picker component
@@ -15,11 +15,15 @@
         </div>
 
         <div class="demo-container">
-            <input type="text" v-model.lazy="color">
 
             <div class="demo-list">
-                <div class="demo-item">
-                    <ColorPicker v-model="color" :preset-colors="presetColors" />
+                <div class="demo-item" ref="colorpickerWrapper">
+                    <ColorPicker v-model="color" :preset-colors="presetColors" :palette-key="paletteKey" :max-palette-colors="14">
+                        <template #activator="{ toggle, open }">
+                            <input type="text" v-model.lazy="color" @focus="open(domNode)">
+                            <button type="button" :disabled="disabled" :style="bgc" class="zpc-color-preview" @click="toggle(domNode)" />
+                        </template>
+                    </ColorPicker>
                 </div>
             </div>
         </div>
@@ -35,6 +39,9 @@ const presetColors = [
     '#e56565', '#3846ba', '#9ea5b0', 'transparent'
 ];
 
+const paletteKey = 'colorpicker.palate';
+const maxPaletteColors = 14;
+
 export default {
     name: 'App',
 
@@ -44,14 +51,23 @@ export default {
 
     data () {
         return {
+            paletteKey,
+            maxPaletteColors,
             presetColors,
-            color: 'rgb(128, 128, 128)'
+            color: '#BBF8DF'
         };
     },
 
     computed: {
+        domNode() {
+            return this.$refs.colorpickerWrapper;
+        },
         textColor() {
-            return ColorModel.isTransparent(this.color) || !ColorModel.isDark(this.color) ? '#000' : '#fff';
+            return ColorModel.isTransparent(this.color) || !ColorModel.isDark(this.color) ? { color: '#000' } : { color: '#fff' };
+        },
+
+        bgc() {
+            return { backgroundColor: this.color };
         }
     }
 };
@@ -132,5 +148,30 @@ html {
   color: #666;
   font-size: 16px;
   font-weight: normal;
+}
+.zpc-color-preview {
+  width: 32px;
+  height: 32px;
+  border: solid 2px #3b3b3b;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.4;
+  border-radius: 0;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-transform: none;
+  transition: opacity 0.2s;
+  font-family: Lato, Roboto, Fira Sans, Segoe UI, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif
 }
 </style>

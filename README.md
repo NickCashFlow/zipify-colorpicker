@@ -18,22 +18,22 @@ $ yarn add zipify-colorpicker
 
 ### CommonJS
 ```js
-const { ZipifyColorpicker } = require('zipify-colorpicker');
+const { ZipifyColorPicker } = require('zipify-colorpicker');
 
 new Vue({
   components: {
-    ZipifyColorpicker
+    ZipifyColorPicker
   }
 })
 ```
 
 ### ES6
 ```js
-import { ZipifyColorpicker } from 'zipify-colorpicker'
+import { ZipifyColorPicker } from 'zipify-colorpicker'
 
 new Vue({
   components: {
-    ZipifyColorpicker
+    ZipifyColorPicker
   }
 })
 ```
@@ -101,7 +101,15 @@ new Vue({
   },
   data () {
     return {
-      color
+      color,
+      paletteKey,
+      presetColors,
+      type,
+      maxPaletteColors,
+      durationEnter,
+      durationLeave,
+      placement,
+      isOverTop
     }
   }
 })
@@ -110,26 +118,26 @@ new Vue({
 
 ```html
 <!-- suppose you have the data 'color' in your component -->
-<ZipifyColorPicker v-model="color" />
-```
-
-OR
-
-```html
-<ZipifyColorPicker :color="color" @input="updateValue" />
-```
-
-In some cases you can give the component a predefined set of colors with the property `presetColors` by simply passing it an array with the color values as strings in any css compatible format.
-
-```html
 <ZipifyColorPicker
+  v-model="color"
+  :palette-key="paletteKey"
+  :type="rgba"
+  :preset-colors="presetColors"
+  :max-palette-colors="14"
+  :duration-enter="150"
+  :duration-leave="100"
+  :placement="bottom-end"
+  :is-over-top="isOverTop"
   @input="updateValue"
-  :color="color"
-  :preset-colors="[
-    '#f00', '#00ff00', '#00ff0055', 'rgb(201, 76, 76)', 'rgba(0,0,255,1)', 'hsl(89, 43%, 51%)', 'hsla(89, 43%, 51%, 0.6)'
-  ]"
-/>
+>
+  <template #activator="{ toggle, open }">
+    <input type="text" v-model.lazy="color">
+    <button type="button" :disabled="disabled" :style="bgc" class="zpc-color-preview" @click="toggle($event.target)" />
+  </template>
+</ZipifyColorPicker>
 ```
+
+In some cases you can give the component a predefined palette with the property `presetColors` by simply passing it an array with the color values as strings in any css compatible format or you can set property `paletteKey`(localStorage key) and the palette will set from localStorage and you can limit the number of colors in showing palette.
 
 ## License
 zipify-colorpicker is licensed under [The MIT License](LICENSE).
